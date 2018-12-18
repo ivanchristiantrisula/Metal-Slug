@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
+    public class item
+    {
+        public int jenis,x;
+        public item(int jenis, int x)
+        {
+            this.jenis = jenis;
+            this.x = x;
+        }
+    }
+
     public class Profile
     {
         public String nama;
@@ -41,6 +51,7 @@ namespace ClassLibrary1
     public class player
     {
         public int life, weapon, point, ammunition, score;
+        public bool immortal;
         public player()
         {
             this.ammunition = -1;
@@ -48,6 +59,7 @@ namespace ClassLibrary1
             this.score = 0;
             this.weapon = 0;
             this.point = 0;
+            this.immortal = false;
         }
     }
 

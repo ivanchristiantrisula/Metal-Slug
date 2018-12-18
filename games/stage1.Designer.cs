@@ -42,6 +42,8 @@
             this.timerCooldown = new System.Windows.Forms.Timer(this.components);
             this.timerBonus = new System.Windows.Forms.Timer(this.components);
             this.timerChild = new System.Windows.Forms.Timer(this.components);
+            this.timerImmortal = new System.Windows.Forms.Timer(this.components);
+            this.timerBoss = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timerIdle
@@ -50,6 +52,7 @@
             // 
             // timerJalan
             // 
+            this.timerJalan.Interval = 50;
             this.timerJalan.Tick += new System.EventHandler(this.timerJalan_Tick);
             // 
             // timerJump
@@ -102,17 +105,26 @@
             // timerChild
             // 
             this.timerChild.Enabled = true;
-            this.timerChild.Interval = 250;
             this.timerChild.Tick += new System.EventHandler(this.timerChild_Tick);
+            // 
+            // timerImmortal
+            // 
+            this.timerImmortal.Interval = 1000;
+            this.timerImmortal.Tick += new System.EventHandler(this.timerImmortal_Tick);
+            // 
+            // timerBoss
+            // 
+            this.timerBoss.Interval = 50;
+            this.timerBoss.Tick += new System.EventHandler(this.timerBoss_Tick);
             // 
             // stage1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 601);
+            this.ClientSize = new System.Drawing.Size(600, 488);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "stage1";
             this.Text = "stage1";
             this.Load += new System.EventHandler(this.stage1_Load);
@@ -138,5 +150,7 @@
         private System.Windows.Forms.Timer timerCooldown;
         private System.Windows.Forms.Timer timerBonus;
         private System.Windows.Forms.Timer timerChild;
+        private System.Windows.Forms.Timer timerImmortal;
+        private System.Windows.Forms.Timer timerBoss;
     }
 }

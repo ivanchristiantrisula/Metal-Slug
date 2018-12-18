@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using ClassLibrary1;
 using AxWMPLib;
 using System.Media;
+using System.Drawing.Imaging;
 
 namespace games
 {
     public partial class stage1 : Form
     {
         Image bg;
+        Image[] img_drop = new Image[6];
         Image currWeapon;
         int weaponCode = 0;
         List<Image> animPlayer = new List<Image>();
@@ -34,8 +36,8 @@ namespace games
         Image[] peasant_esc = new Image[6];
         Image[] peasant_idle = new Image[2];
         Image[] peasant_move = new Image[3];
-        Image[] child = new Image[9];
-       
+        Image[] child = new Image[10];
+        List<item> drop = new List<item>();
 
         bool ctrPeasant = false;
         bool ctrChild = false;
@@ -50,7 +52,7 @@ namespace games
         int x_map=0;
         int hadap = 1;
         int level = 0;
-        int stage = 0;
+        int stage = 3;
         int nenemy = 0;
         int enemyNow = 0;
         bool keyDisabled = false;
@@ -60,12 +62,28 @@ namespace games
         bool lootOpened = false;
         Form1 parent;
         SoundPlayer[] sfx_weapon = new SoundPlayer[7];
+        Image currBossAnim = null;
+        List<Image> listFlash = new List<Image>();
+        public void gameover()
+        {
+            if(p.life <= 0)
+            {
+                MessageBox.Show("GAME OVER!");
+                if(parent.player.highscore[level] < p.score)
+                {
+                    MessageBox.Show("Congratulation you get a new highscore!");
+                    parent.player.highscore[level] = p.score;
+                }
 
+                parent.goForm(3);
+            }
+        }
         public void nextStage()
         {
             keyDisabled = true;
             nenemy = r.Next(15, 30);
             enemyNow = 0;
+            hadap = 1;
             stage++;
 
             timerZombie.Stop();
@@ -83,14 +101,16 @@ namespace games
         {
             parent = (Form1)this.MdiParent;
             level = lvl;
-            stage = 3;
+            stage = 4;
             x_map = 0;
+            x_child = 800;
             p = new player();
             if (level == 1)
             {
                 bg = Image.FromFile("image/background/bg_mainmenu.jpg");
             }
             timerChild.Stop();
+            timerImmortal.Stop();
 
             nextStage();
         }
@@ -114,15 +134,31 @@ namespace games
             timerIdle.Interval = 500;
             timerJump.Interval = 250;
             timerIdle.Start();
+            timerChild.Stop();
             child[0] = Image.FromFile("image/peasant/child_move1.png");
             child[1] = Image.FromFile("image/peasant/child_move2.png");
-            child[2] = Image.FromFile("image/peasant/child_esc1.png");
-            child[3] = Image.FromFile("image/peasant/child_esc2.png");
-            child[4] = Image.FromFile("image/peasant/child_esc3.png");
-            child[5] = Image.FromFile("image/peasant/child_esc4.png");
-            child[6] = Image.FromFile("image/peasant/child_esc5.png");
-            child[7] = Image.FromFile("image/peasant/child_esc6.png");
-            child[8] = Image.FromFile("image/peasant/child_esc7.png");
+            child[2] = Image.FromFile("image/peasant/child_move3.png");
+            child[3] = Image.FromFile("image/peasant/child_esc1.png");
+            child[4] = Image.FromFile("image/peasant/child_esc2.png");
+            child[5] = Image.FromFile("image/peasant/child_esc3.png");
+            child[6] = Image.FromFile("image/peasant/child_esc4.png");
+            child[7] = Image.FromFile("image/peasant/child_esc5.png");
+            child[8] = Image.FromFile("image/peasant/child_esc6.png");
+            child[9] = Image.FromFile("image/peasant/child_esc7.png");
+
+            //item
+            //0 atom
+            //1 blackstone
+            //2 goldlion
+            //3 goldpig
+            //4 goldpill
+            //5 weaponbox
+            img_drop[0] = Image.FromFile("image/icon/item_atom.png");
+            img_drop[1] = Image.FromFile("image/icon/item_blackstone.png");
+            img_drop[2] = Image.FromFile("image/icon/item_goldlion.png");
+            img_drop[3] = Image.FromFile("image/icon/item_goldpig.png");
+            img_drop[4] = Image.FromFile("image/icon/item_goldpill.png");
+            img_drop[5] = Image.FromFile("image/icon/item_weaponbox.png");
 
             sfx_weapon[0] = new SoundPlayer("sfx/weapon/shot_smg.wav");
             sfx_weapon[1] = new SoundPlayer("sfx/weapon/shot_xbow.wav");
@@ -237,13 +273,20 @@ namespace games
             ammoImages.Add(Image.FromFile("image/ammo/ammo_explode.png"));
             //AMMO CHAINSAW
             //AMMO KNIFE
+
+            listFlash.Add(Image.FromFile("image/boss/boss2_move1.png"));
+            listFlash.Add(Image.FromFile("image/boss/boss2_move2.png"));
+            listFlash.Add(Image.FromFile("image/boss/boss2_move3.png"));
+            listFlash.Add(Image.FromFile("image/boss/boss2_dead1.png"));
+            listFlash.Add(Image.FromFile("image/boss/boss2_dead2.png"));
+            listFlash.Add(Image.FromFile("image/boss/boss2_dead3.png"));
+            listFlash.Add(Image.FromFile("image/boss/boss2_dead4.png"));
         }
 
         private void stage1_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.DrawImage(map[level - 1], new Rectangle(x_map, 0, 4800, 600), new Rectangle(0, 0, 4800, 600), GraphicsUnit.Pixel);
-
 
             if (hadap == 1)
             {
@@ -253,6 +296,8 @@ namespace games
             {
                 g.DrawImage(currAnim, x - 125, y, 200, 200);
             }
+
+
 
             for (int i = 0; i < bot.Count; i++)
             {
@@ -275,6 +320,7 @@ namespace games
             Font f = new Font("Microsoft Sans Serif", 24);
             Brush b = new SolidBrush(Color.White);
             g.DrawString("" + p.life, f, b, 70, 15);
+            g.DrawString("" + p.score, f, b, 650, 15);
             String tammo = "";
             if(p.ammunition == -1)
             {
@@ -287,7 +333,15 @@ namespace games
 
             g.DrawString("" + p.life, f, b, 70, 15);
             g.DrawString(tammo, f, b, 300, 15);
-
+            if(p.immortal == true)
+            {
+                b = new SolidBrush(Color.Gold);
+                g.DrawString(" "+ctrImmortal+" ", f, b, x, 450);
+                g.DrawString("~X~X~", f, b, x, 550);
+                g.DrawString("~~X~~", f, b, x, 525);
+                g.DrawString("~X~X~", f, b, x, 500);
+                g.DrawString("~~X~~", f, b, x, 475);
+            }
             if (!lootOpened)
             {
                 if (y_lootbox != 550)
@@ -298,6 +352,16 @@ namespace games
                 g.DrawImage(lootBox, x_lootbox, y_lootbox, 50,50);
             }
 
+            g.DrawImage(child[aniChild], x_child, y_child, 200, 200);
+            for (int i = 0; i < drop.Count; i++)
+            {
+                g.DrawImage(img_drop[drop[i].jenis], drop[i].x, 550, 50, 50);
+            }
+
+            if (currBossAnim != null)
+            {
+                g.DrawImage(currBossAnim, x_boss, y_boss, 200, 200);
+            }
             
         }
 
@@ -397,6 +461,7 @@ namespace games
             {
                 x = 0;
             }
+            collItem();
             Invalidate();
         }
 
@@ -798,7 +863,7 @@ namespace games
                     bot[i].x -= 20;
                     bot[i].x -= 20;
                     bot[i].ani++;
-                    if (bot[i].ani > 3)
+                    if (bot[i].ani > 2)
                     {
                         bot[i].ani = 0;
                     }
@@ -808,7 +873,27 @@ namespace games
                     bot[i].ani++;
                     if (bot[i].ani > 5)
                     {
+                        if(bot[i].jenis == 0)
+                        {
+                            p.score += 10;
+                        }else if(bot[i].jenis == 1)
+                        {
+                            p.score += 30;
+                        }else if(bot[i].jenis == 2)
+                        {
+                            p.score += 60;
+                        }else if(bot[i].jenis == 3)
+                        {
+                            p.score += 80;
+                        }else if(bot[i].jenis == 4)
+                        {
+                            p.score += 100;
+                        }else if(bot[i].jenis == 5)
+                        {
+                            p.score += 150;
+                        }
                         bot.RemoveAt(i);
+                        break;
                     }
                 }
 
@@ -818,13 +903,16 @@ namespace games
                     {
                         if (p.life > -1 && ctrPlayerMati == 0)
                         {
-                            keyDisabled = true;
-                            timerIdle.Stop();
-                            timerJalan.Stop();
-                            timerJump.Stop();
-                            timerPlayerMati.Start();
+                            if (!p.immortal)
+                            {
+                                keyDisabled = true;
+                                timerIdle.Stop();
+                                timerJalan.Stop();
+                                timerJump.Stop();
+                                timerPlayerMati.Start();
 
-                            p.life--;
+                                p.life--;
+                            }
                         }
                     }
                 }
@@ -849,7 +937,11 @@ namespace games
                 {
                     //BOSS STAGE
                     timerNextStage.Stop();
-                    MessageBox.Show("BOSS STAGE");
+                    if (level == 1)
+                    {
+                        timerBoss.Start();
+                        keyDisabled = false;
+                    }
 
                 }
             }
@@ -902,6 +994,7 @@ namespace games
                 keyDisabled = false;
                 ctrPlayerMati = -1;
                 bot.Clear();
+                enemyNow = 0;
             }
             ctrPlayerMati++;
             Invalidate();
@@ -927,7 +1020,7 @@ namespace games
 
         private void timerBonus_Tick(object sender, EventArgs e)
         {
-            int jenis = 1;
+            int jenis = r.Next(2);
             if(jenis == 0)
             {
                 y_lootbox = 0;
@@ -946,15 +1039,81 @@ namespace games
         //3-9 = esc
         public void collChild()
         {
-            if (x > x_lootbox - 50 && x < x_lootbox + 50 && !ctrChild)
+            if (x > x_child - 50 && x < x_child + 50 && !ctrChild)
             {
                 aniChild = 3;
+                timerChild.Interval = 250;
+                ctrChild = true;
             }
         }
+        int ctrImmortal = 0;
+        public void collItem()
+        {
+            for (int i = 0; i < drop.Count; i++)
+            {
+                if (x > drop[i].x - 50 && x < drop[i].x + 50)
+                {
+                    if(drop[i].jenis == 0)
+                    {
+                        for (int j = 0; j < bot.Count; j++)
+                        {
+                            bot[j].life = 0;
+                            bot[j].ani = 3;
+                        }
+                    }else if(drop[i].jenis == 1)
+                    {
+                        p.life++;
+                    }else if(drop[i].jenis == 2)
+                    {
+                        p.score += 1000;
+                    }else if(drop[i].jenis == 3)
+                    {
+                        p.score += 500;
+                    }else if(drop[i].jenis == 4)
+                    {
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                    }else if(drop[i].jenis == 5)
+                    {
+                        int a = r.Next(1, 6);
+                        p.weapon = a;
+
+                        if (p.weapon == 1)
+                        {
+                            cdWeapon = 1000;
+                            p.ammunition = 10;
+                        }
+                        else if (p.weapon == 2)
+                        {
+                            cdWeapon = 2000;
+                            p.ammunition = 15;
+                        }
+                        else if (p.weapon == 3)
+                        {
+                            cdWeapon = 100;
+                            p.ammunition = 200;
+                        }
+                        else if (p.weapon == 4)
+                        {
+                            cdWeapon = 3000;
+                            p.ammunition = 15;
+                        }
+                        else if (p.weapon == 5)
+                        {
+                            cdWeapon = 3000;
+                            p.ammunition = 10;
+                        }
+                    }
+
+                    drop.RemoveAt(i);
+                }
+            }
+        }
+
         private void timerChild_Tick(object sender, EventArgs e)
         {
             //CHECKPOINT
-            // ANIMASI MASIH GAGAL
             if (aniChild < 3)
             {
                 x_child -= 10;
@@ -963,18 +1122,21 @@ namespace games
                 {
                     aniChild = 0;
                 }
+                collChild();
             }
             else
             {
                 aniChild++;
-                if(aniChild == 8)
+                if(aniChild == 10)
                 {
-                    //random barang
-
                     aniChild = 0;
+                    timerChild.Interval = 100;
+                    //drop barang
+                    int r_jenis = r.Next(6);
+                    drop.Add(new item(r_jenis, x_child));
                 }
             }
-            if(x < -200)
+            if(x_child < -200)
             {
                 timerChild.Stop();
                 x_child = 800;
@@ -982,6 +1144,62 @@ namespace games
                 aniChild = 0;
             }
             Invalidate();
+        }
+
+        private void timerImmortal_Tick(object sender, EventArgs e)
+        {
+            ctrImmortal++;
+            if(ctrImmortal > 10)
+            {
+                p.immortal = false;
+                timerImmortal.Stop();
+            }
+        }
+
+        int ctrTimerBoss = 0;
+        float x_boss = 599;
+        int y_boss = 400;
+        float boss_hadap = -1;
+        private void timerBoss_Tick(object sender, EventArgs e)
+        {
+            if (level == 1)
+            {
+                currBossAnim = listFlash[ctrTimerBoss];
+                x_boss -= 10*boss_hadap;
+
+                ctrTimerBoss++;
+                if (ctrTimerBoss == 3)
+                {
+                    ctrTimerBoss = 0;
+                }
+
+                if (boss_hadap == 1)
+                {
+                    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200).IntersectsWith(new Rectangle(x-150, y, 200, 200)))
+                    {
+                        boss_hadap *= -1;
+                        x_boss += 150;
+                    }
+                }
+                else
+                {
+                    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200).IntersectsWith(new Rectangle(x+150, y, 200, 200)))
+                    {
+                        boss_hadap *= -1;
+                        x_boss -= 150;
+                    }
+                    Bitmap bmp = new Bitmap(listFlash[ctrTimerBoss]);
+                    bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                    currBossAnim = bmp;
+
+                }
+                
+
+                if (x_boss <= 0 || x_boss >= 600)
+                {
+                    boss_hadap *= -1;
+                }
+            }
         }
     }
 }

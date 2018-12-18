@@ -4,3 +4,15 @@ D:\Git\pughole\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.csprojAssemblyRef
 D:\Git\pughole\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
 D:\Git\pughole\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.dll
 D:\Git\pughole\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.pdb
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.pdb
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.csprojResolveAssemblyReference.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.csprojAssemblyReference.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\ClassLibrary1\obj\Debug\ClassLibrary1.pdb

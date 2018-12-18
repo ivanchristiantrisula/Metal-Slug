@@ -22,3 +22,50 @@ D:\Git\pughole\Proyek-PV\games\obj\Debug\games.csproj.CoreCompileInputs.cache
 D:\Git\pughole\Proyek-PV\games\obj\Debug\games.csproj.CopyComplete
 D:\Git\pughole\Proyek-PV\games\obj\Debug\games.exe
 D:\Git\pughole\Proyek-PV\games\obj\Debug\games.pdb
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\games.exe.config
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\games.exe
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\games.pdb
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\ClassLibrary1.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\ClassLibrary1.pdb
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\Interop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\bin\Debug\AxInterop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.csprojResolveAssemblyReference.cache
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\Interop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\AxInterop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.csproj.ResolveComReference.cache
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.Form1.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.gallery.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.mainmenu.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.newgame.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.Properties.Resources.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.stage.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.stage1.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.startmenu.resources
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.csproj.GenerateResource.Cache
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.csproj.CoreCompileInputs.cache
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.exe
+E:\KULIAH\SEM 3\PV\proyek\Metal-Slug\games\obj\Debug\games.pdb
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.csprojAssemblyReference.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\Interop.WMPLib.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.csproj.ResolveComReference.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.Form1.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.gallery.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.mainmenu.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.newgame.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.Properties.Resources.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.stage.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.stage1.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.startmenu.resources
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.csproj.GenerateResource.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.csproj.CoreCompileInputs.cache
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.exe
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.pdb
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\games.exe.config
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\games.exe
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\games.pdb
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\ClassLibrary1.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\ClassLibrary1.pdb
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\Interop.WMPLib.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.csproj.CopyComplete
