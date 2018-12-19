@@ -514,6 +514,7 @@ namespace games
                 ctrJalan = 0;
                 timerIdle.Start();
                 timerShot.Stop();
+                timerShotAtas.Stop();
                 if (hadap == 1)
                 {
                     currAnim = animPlayer[0];
@@ -1517,32 +1518,14 @@ namespace games
         {
             if(p.immortal == false)
             {
-                //if (boss_hadap == 1)
-                //{
-                //    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 100, 100).IntersectsWith(new Rectangle(x - 150, y, 200, 200)))
-                //    {
-                //        ctrImmortal = 0;
-                //        p.immortal = true;
-                //        timerImmortal.Start();
-                //        timerPlayerMati.Start();
-                //        p.life--;
-                //    }
-                //}
-                //else
-                //{
-                //    if (new Rectangle(Convert.ToInt32(x_boss) + 80, y_boss, 100, 100).IntersectsWith(new Rectangle(x + 150, y, 200, 200)))
-                //    {
-                //        timerPlayerMati.Start();
-                //        ctrImmortal = 0;
-                //        p.immortal = true;
-                //        timerImmortal.Start();
-                //        p.life--;
-                //    }
-                //}
                 if (boss_hadap == -1)
                 {
                     if (x <= x_boss + 250 && x >= x_boss + 150 && y == 400)
                     {
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        timerPlayerMati.Start();
                         p.life--;
                     }
                 }
@@ -1550,6 +1533,10 @@ namespace games
                 {
                     if (x >= x_boss - 100 && x <= x_boss && y == 400)
                     {
+                        timerPlayerMati.Start();
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
                         p.life--;
                     }
                 }
