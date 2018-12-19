@@ -44,6 +44,7 @@
             this.timerChild = new System.Windows.Forms.Timer(this.components);
             this.timerImmortal = new System.Windows.Forms.Timer(this.components);
             this.timerBoss = new System.Windows.Forms.Timer(this.components);
+            this.timerShotAtas = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timerIdle
@@ -118,6 +119,10 @@
             this.timerBoss.Interval = 50;
             this.timerBoss.Tick += new System.EventHandler(this.timerBoss_Tick);
             // 
+            // timerShotAtas
+            // 
+            this.timerShotAtas.Tick += new System.EventHandler(this.timerShotAtas_Tick);
+            // 
             // stage1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -154,5 +159,6 @@
         private System.Windows.Forms.Timer timerChild;
         private System.Windows.Forms.Timer timerImmortal;
         private System.Windows.Forms.Timer timerBoss;
+        private System.Windows.Forms.Timer timerShotAtas;
     }
 }

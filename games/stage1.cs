@@ -355,10 +355,10 @@ namespace games
             {
                 b = new SolidBrush(Color.Gold);
                 g.DrawString(" "+ctrImmortal+" ", f, b, x, 450);
-                g.DrawString("~X~X~", f, b, x, 550);
-                g.DrawString("~~X~~", f, b, x, 525);
+                g.DrawString("XX~XX", f, b, x, 550);
+                g.DrawString("X~X~X", f, b, x, 525);
                 g.DrawString("~X~X~", f, b, x, 500);
-                g.DrawString("~~X~~", f, b, x, 475);
+                g.DrawString("X~X~X", f, b, x, 475);
             }
             if (!lootOpened)
             {
@@ -576,6 +576,10 @@ namespace games
                     
                     timerShot.Start();
                 }
+                if (e.KeyCode == Keys.W)
+                {
+                    timerShotAtas.Start();
+                }
                 Invalidate();
                 //cek nabrak lootbox gak
                 if (x > x_lootbox - 50 && x < x_lootbox + 50 && y_lootbox == 550 && !lootOpened)
@@ -619,8 +623,8 @@ namespace games
             {
                 if (ctrJump == 1)
                 {
-                    y -= 150;
-                    x += 100;
+                    y -= 250;
+                    x += 200;
                     currAnim = animPlayer[5];
                     ctrJump++;
                     if(x > 680)
@@ -631,8 +635,8 @@ namespace games
                 }
                 else
                 {
-                    y += 150;
-                    x += 100;
+                    y += 250;
+                    x += 200;
                     currAnim = animPlayer[2];
                     if (x > 680)
                     {
@@ -647,8 +651,8 @@ namespace games
             {
                 if (ctrJump == 1)
                 {
-                    y -= 100;
-                    x -= 100;
+                    y -= 250;
+                    x -= 200;
 
                     Bitmap bmp = new Bitmap(animPlayer[5]);
                     bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
@@ -662,8 +666,8 @@ namespace games
                 }
                 else
                 {
-                    y += 100;
-                    x -= 100;
+                    y += 250;
+                    x -= 200;
 
                     Bitmap bmp = new Bitmap(animPlayer[2]);
                     bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
@@ -730,6 +734,9 @@ namespace games
                     else if (shot[i].arah == -1)
                     {
                         shot[i].x -= 25;
+                    }else if (shot[i].arah == 0)
+                    {
+                        shot[i].y -= 25;
                     }
                 }
             }
@@ -739,6 +746,8 @@ namespace games
         }
         int cdWeapon = 500;
         int ctrWeapon = 500;
+
+        int flash_life = 500;
 
         public void ammoColl()
         {
@@ -763,6 +772,7 @@ namespace games
                         {
                             Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
                             Rectangle rZombie = new Rectangle(tempBotX, tempBotY, 120, 160);
+                            
                             if (rAmmo.IntersectsWith(rZombie))
                             {
                                 bot[j].life -= shot[i].dmg;
@@ -901,7 +911,75 @@ namespace games
                         }
                     }
 
+
                     if(hp_boss5 <= 0)
+                    {
+                        nextStage();
+                    }
+                }
+                if (level == 2)
+                {
+                    for (int i = 0; i < shot.Count; i++)
+                    {
+                        int tempX = shot[i].x;
+                        int tempY = shot[i].y;
+                        if (shot[i].jenis == 0 || shot[i].jenis == 3)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                flash_life -= shot[i].dmg;
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 1 || shot[i].jenis == 5)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                flash_life -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 2)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                flash_life -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 4)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                shot.Add(new ammo(6, shot[i].x, shot[i].y, shot[i].arah));
+                                sfx_weapon[6].Play();
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 6)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                flash_life -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                    }
+
+
+                    if (flash_life <= 0)
                     {
                         nextStage();
                     }
@@ -912,58 +990,113 @@ namespace games
 
         private void timerShot_Tick(object sender, EventArgs e)
         {
-            nembak();
+            nembak(0);
         }
 
-        private void nembak()
+        private void nembak(int a)
         {
-            if (ctrWeapon >= cdWeapon)
+            //nembak kiri/kanan
+            if (a == 0)
             {
-                if (hadap == 1)
+                if (ctrWeapon >= cdWeapon)
                 {
-                    currAnim = animPlayer[13];
-                }
-                else
-                {
-                    Bitmap bmp = new Bitmap(animPlayer[13]);
-                    bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
-                    currAnim = bmp;
-                }
-                ctrWeapon = 0;
-                int tempX = x;
-                if (hadap == 1)
-                {
-                    tempX += 90;
-                }
-                else
-                {
-                    tempX -= 90;
-                }
-                int addSmg = 0;
-                if(p.weapon == 3)
-                {
-                    if(ctrSmg == 0)
+                    if (hadap == 1)
                     {
-                        ctrSmg = 1;
-                        addSmg = 5;
+                        currAnim = animPlayer[13];
                     }
                     else
                     {
-                        ctrSmg = 0;
-                        addSmg = -5;
+                        Bitmap bmp = new Bitmap(animPlayer[13]);
+                        bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                        currAnim = bmp;
                     }
-                }
-                shot.Add(new ammo(p.weapon, tempX, y + 100 + addSmg, hadap));
-                p.ammunition--;
+                    ctrWeapon = 0;
+                    int tempX = x;
+                    if (hadap == 1)
+                    {
+                        tempX += 90;
+                    }
+                    else
+                    {
+                        tempX -= 90;
+                    }
+                    int addSmg = 0;
+                    if (p.weapon == 3)
+                    {
+                        if (ctrSmg == 0)
+                        {
+                            ctrSmg = 1;
+                            addSmg = 5;
+                        }
+                        else
+                        {
+                            ctrSmg = 0;
+                            addSmg = -5;
+                        }
+                    }
+                    shot.Add(new ammo(p.weapon, tempX, y + 100 + addSmg, hadap));
+                    p.ammunition--;
 
-                if(p.ammunition <= 0)
-                {
-                    p.ammunition = -1;
-                    p.weapon = 0;
-                    cdWeapon = 500;
+                    if (p.ammunition <= 0)
+                    {
+                        p.ammunition = -1;
+                        p.weapon = 0;
+                        cdWeapon = 500;
+                    }
+                    sfx_weapon[p.weapon].Play();
                 }
-                sfx_weapon[p.weapon].Play();
+            }//nembak atas
+            else
+            {
+                if (ctrWeapon >= cdWeapon)
+                {
+                    if (hadap == 1)
+                    {
+                        currAnim = animPlayer[13];
+                    }
+                    else
+                    {
+                        Bitmap bmp = new Bitmap(animPlayer[13]);
+                        bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                        currAnim = bmp;
+                    }
+                    ctrWeapon = 0;
+                    int tempX = x;
+                    if (hadap == 1)
+                    {
+                        tempX += 90;
+                    }
+                    else
+                    {
+                        tempX -= 90;
+                    }
+                    int addSmg = 0;
+                    if (p.weapon == 3)
+                    {
+                        if (ctrSmg == 0)
+                        {
+                            ctrSmg = 1;
+                            addSmg = 5;
+                        }
+                        else
+                        {
+                            ctrSmg = 0;
+                            addSmg = -5;
+                        }
+                    }
+                    shot.Add(new ammo(p.weapon, tempX, y + 100 + addSmg, 0));
+                    p.ammunition--;
+
+                    if (p.ammunition <= 0)
+                    {
+                        p.ammunition = -1;
+                        p.weapon = 0;
+                        cdWeapon = 500;
+                    }
+                    sfx_weapon[p.weapon].Play();
+                }
             }
+            
         }
         int ctrShotgun = 0;
         int ctrExplode = 0;
@@ -1384,33 +1517,46 @@ namespace games
         {
             if(p.immortal == false)
             {
-                if (boss_hadap == 1)
+                //if (boss_hadap == 1)
+                //{
+                //    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 100, 100).IntersectsWith(new Rectangle(x - 150, y, 200, 200)))
+                //    {
+                //        ctrImmortal = 0;
+                //        p.immortal = true;
+                //        timerImmortal.Start();
+                //        timerPlayerMati.Start();
+                //        p.life--;
+                //    }
+                //}
+                //else
+                //{
+                //    if (new Rectangle(Convert.ToInt32(x_boss) + 80, y_boss, 100, 100).IntersectsWith(new Rectangle(x + 150, y, 200, 200)))
+                //    {
+                //        timerPlayerMati.Start();
+                //        ctrImmortal = 0;
+                //        p.immortal = true;
+                //        timerImmortal.Start();
+                //        p.life--;
+                //    }
+                //}
+                if (boss_hadap == -1)
                 {
-                    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 100, 100).IntersectsWith(new Rectangle(x - 150, y, 200, 200)))
+                    if (x <= x_boss + 250 && x >= x_boss + 150 && y == 400)
                     {
-                        ctrImmortal = 0;
-                        p.immortal = true;
-                        timerImmortal.Start();
-                        timerPlayerMati.Start();
                         p.life--;
                     }
                 }
                 else
                 {
-                    if (new Rectangle(Convert.ToInt32(x_boss) + 80, y_boss, 100, 100).IntersectsWith(new Rectangle(x + 150, y, 200, 200)))
+                    if (x >= x_boss - 100 && x <= x_boss && y == 400)
                     {
-                        timerPlayerMati.Start();
-                        ctrImmortal = 0;
-                        p.immortal = true;
-                        timerImmortal.Start();
                         p.life--;
                     }
                 }
+                
             }
             
         }
-        
-
         
         //BOSS 5 PUNYA JANGAN DIUBAH BARISAN
         public void boss5_ammoColl()
@@ -1480,6 +1626,11 @@ namespace games
         private void stage1_MouseClick(object sender, MouseEventArgs e)
         {
             //MessageBox.Show(e.X+" "+e.Y);
+        }
+
+        private void timerShotAtas_Tick(object sender, EventArgs e)
+        {
+            nembak(1);
         }
     }
 }
