@@ -46,6 +46,8 @@
             this.timerBoss = new System.Windows.Forms.Timer(this.components);
             this.timerShotAtas = new System.Windows.Forms.Timer(this.components);
             this.boss4Shot = new System.Windows.Forms.Timer(this.components);
+            this.timerJuggerAtt = new System.Windows.Forms.Timer(this.components);
+            this.timer1Detik = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timerIdle
@@ -129,6 +131,16 @@
             this.boss4Shot.Interval = 1000;
             this.boss4Shot.Tick += new System.EventHandler(this.boss4Shot_Tick);
             // 
+            // timerJuggerAtt
+            // 
+            this.timerJuggerAtt.Interval = 500;
+            this.timerJuggerAtt.Tick += new System.EventHandler(this.timerJuggerAtt_Tick);
+            // 
+            // timer1Detik
+            // 
+            this.timer1Detik.Interval = 1000;
+            this.timer1Detik.Tick += new System.EventHandler(this.timer1Detik_Tick);
+            // 
             // stage1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -167,5 +179,7 @@
         private System.Windows.Forms.Timer timerBoss;
         private System.Windows.Forms.Timer timerShotAtas;
         private System.Windows.Forms.Timer boss4Shot;
+        private System.Windows.Forms.Timer timerJuggerAtt;
+        private System.Windows.Forms.Timer timer1Detik;
     }
 }

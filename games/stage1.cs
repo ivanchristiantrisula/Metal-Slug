@@ -70,6 +70,7 @@ namespace games
         Image currBossAnim = null;
         bool done = false;
         List<Image> listFlash = new List<Image>();
+        List<Image> imageJugger = new List<Image>();
         public void gameover()
         {
             
@@ -322,6 +323,21 @@ namespace games
             listFlash.Add(Image.FromFile("image/boss/boss2_dead2.png"));
             listFlash.Add(Image.FromFile("image/boss/boss2_dead3.png"));
             listFlash.Add(Image.FromFile("image/boss/boss2_dead4.png"));
+
+            imageJugger.Add(Image.FromFile("image/boss/boss1_move1.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_move2.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_move3.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_hit1.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_hit2.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_hit3.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_hit4.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_hit5.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_hit6.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_dead1.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_dead2.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_dead3.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_dead4.png"));
+            imageJugger.Add(Image.FromFile("image/boss/boss1_dead5.png"));
         }
 
         private void stage1_Paint(object sender, PaintEventArgs e)
@@ -428,6 +444,12 @@ namespace games
                     {
                         Pen p = new Pen(Color.DarkRed,30);
                         g.DrawLine(p, 597, 150, desLaser, 600);
+                    }
+                }else if (level == 1)
+                {
+                    if (currBossAnim != null)
+                    {
+                        g.DrawImage(currBossAnim, x_boss, y_boss-200, 200, 400);
                     }
                 }
             }
@@ -776,7 +798,8 @@ namespace games
         int cdWeapon = 500;
         int ctrWeapon = 500;
 
-        int flash_life = 500;
+        int flash_life = 250;
+        int jugger_life = 500;
 
         public void ammoColl()
         {
@@ -1080,6 +1103,73 @@ namespace games
                         nextStage();
                     }
                 }
+                if (level == 1)
+                {
+                    for (int i = 0; i < shot.Count; i++)
+                    {
+                        int tempX = shot[i].x;
+                        int tempY = shot[i].y;
+                        if (shot[i].jenis == 0 || shot[i].jenis == 3)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss-200, 200, 400);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                jugger_life -= shot[i].dmg;
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 1 || shot[i].jenis == 5)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss - 200, 200, 400);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                jugger_life -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 2)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss - 200, 200, 400);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                jugger_life -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 4)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss - 200, 200, 400);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                shot.Add(new ammo(6, shot[i].x, shot[i].y, shot[i].arah));
+                                sfx_weapon[6].Play();
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 6)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss - 200, 200, 400);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                jugger_life -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                    }
+
+
+                    if (jugger_life <= 0)
+                    {
+                        nextStage();
+                    }
+                }
             }
             Invalidate();
         }
@@ -1304,7 +1394,7 @@ namespace games
                     keyDisabled = false;
                     bossFight = true;
                     timerBoss.Start();
-
+                    timer1Detik.Start();
                 }
             }
             else
@@ -1679,6 +1769,46 @@ namespace games
                     }
                 }
                 collLaser();
+            }else if (level == 1)
+            {
+                timerBoss.Interval = 500;
+                if (boss_hadap == -1)
+                {
+                    currBossAnim = imageJugger[ctrTimerBoss];
+                }
+                else
+                {
+                    Bitmap bmp = new Bitmap(imageJugger[ctrTimerBoss]);
+                    bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                    currBossAnim = bmp;
+                }
+
+                x_boss -= 10 * boss_hadap;
+
+                if (x_boss <= 0 || x_boss >= 600)
+                {
+                    boss_hadap *= -1;
+                }
+                
+                ctrTimerBoss++;
+                if (ctrTimerBoss == 3)
+                {
+                    ctrTimerBoss = 0;
+                }
+
+                if (boss_hadap == 1)
+                {
+                    if (x > x_boss)
+                    {
+                        boss_hadap *= -1;
+                    }
+                }else if (boss_hadap == -1)
+                {
+                    if (x < x_boss)
+                    {
+                        boss_hadap *= -1;
+                    }
+                }
             }
         }
         //BOSS 4 PUNYA AING
@@ -1726,32 +1856,14 @@ namespace games
         {
             if(p.immortal == false)
             {
-                //if (boss_hadap == 1)
-                //{
-                //    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 100, 100).IntersectsWith(new Rectangle(x - 150, y, 200, 200)))
-                //    {
-                //        ctrImmortal = 0;
-                //        p.immortal = true;
-                //        timerImmortal.Start();
-                //        timerPlayerMati.Start();
-                //        p.life--;
-                //    }
-                //}
-                //else
-                //{
-                //    if (new Rectangle(Convert.ToInt32(x_boss) + 80, y_boss, 100, 100).IntersectsWith(new Rectangle(x + 150, y, 200, 200)))
-                //    {
-                //        timerPlayerMati.Start();
-                //        ctrImmortal = 0;
-                //        p.immortal = true;
-                //        timerImmortal.Start();
-                //        p.life--;
-                //    }
-                //}
                 if (boss_hadap == -1)
                 {
                     if (x <= x_boss + 250 && x >= x_boss + 150 && y == 400)
                     {
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        timerPlayerMati.Start();
                         p.life--;
                     }
                 }
@@ -1759,6 +1871,10 @@ namespace games
                 {
                     if (x >= x_boss - 100 && x <= x_boss && y == 400)
                     {
+                        timerPlayerMati.Start();
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
                         p.life--;
                     }
                 }
@@ -1842,6 +1958,54 @@ namespace games
             nembak(1);
         }
 
-        
+        int ctrJuggerAtt = 0;
+        private void timerJuggerAtt_Tick(object sender, EventArgs e)
+        {
+            if (boss_hadap == -1)
+            {
+                currBossAnim = imageJugger[ctrJuggerAtt + 3];
+            }
+            else
+            {
+                Bitmap bmp = new Bitmap(imageJugger[ctrJuggerAtt + 3]);
+                bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                currBossAnim = bmp;
+            }
+
+            if (ctrJuggerAtt == 5)
+            {
+                if (x < x_boss + 25 && x > x_boss - 25)
+                {
+                    ctrImmortal = 0;
+                    p.immortal = true;
+                    timerImmortal.Start();
+                    timerPlayerMati.Start();
+                    p.life--;
+                }
+            }
+
+            ctrJuggerAtt++;
+
+            if (ctrJuggerAtt == 6)
+            {
+                ctrJuggerAtt = 0;
+                timerBoss.Start();
+                timerJuggerAtt.Stop();
+                timer1Detik.Start();
+            }
+        }
+
+        int detik = 1;
+        private void timer1Detik_Tick(object sender, EventArgs e)
+        {
+            if (detik%5==0)
+            {
+                timerJuggerAtt.Start();
+                timerBoss.Stop();
+                detik++;
+                timer1Detik.Stop();
+            }
+            detik++;
+        }
     }
 }
