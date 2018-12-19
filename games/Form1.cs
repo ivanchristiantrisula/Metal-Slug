@@ -314,12 +314,16 @@ namespace games
                     g.next();
                 }else if(e.KeyCode == Keys.Back)
                 {
-                    goForm(3);
+                    g.back();
                     menu_enter.Play();
                 }else if(e.KeyCode == Keys.A)
                 {
                     menu_switch.Play();
                     g.prev();
+                }else if(e.KeyCode == Keys.Enter)
+                {
+                    menu_enter.Play();
+                    g.enter();
                 }
             }else if(formNow == 5)
             {

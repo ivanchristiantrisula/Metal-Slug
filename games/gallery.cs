@@ -31,68 +31,185 @@ namespace games
             parent = (Form1)this.MdiParent;
             Invalidate();
         }
+        public void back()
+        {
+            if(ctrGall == 0)
+            {
+                parent.goForm(3);
+            }
+            else
+            {
+                ctrGall = 0;
+                ctrZombie = 0;
+                ctrWeapon = 0;
+                ctrBoss = 0;
+                Invalidate();
+            }
+        }
         private void gallery_Load(object sender, EventArgs e)
         {
             this.Size = new Size(800, 600);
             this.DoubleBuffered = true;
         }
 
-        public void next()
+        int ctrGall = 0;
+        int ctrBoss = 0;
+        int ctrWeapon = 0;
+        int ctrZombie = 0;
+        //0 Main
+        //1 boss
+        //2 weapon
+        //3 zombie
+
+        public void enter()
         {
-            menu++;
-            if(menu > 3)
+            if(ctrGall == 0)
             {
-                menu = 1;
+                ctrGall = menu;
             }
             Invalidate();
         }
 
+        public void next()
+        {
+            if(ctrGall == 0)
+            {
+                menu++;
+                if (menu > 3)
+                {
+                    menu = 1;
+                }
+                Invalidate();
+            }else if(ctrGall == 1)
+            {
+                ctrBoss++;
+                if(ctrBoss > parent.player.boss-1)
+                {
+                    ctrBoss = 0;
+                }
+                Invalidate();
+            }else if(ctrGall == 2)
+            {
+                ctrWeapon++;
+                if(ctrWeapon > 5)
+                {
+                    ctrWeapon = 0;
+                }
+                Invalidate();
+            }else if(ctrGall == 3)
+            {
+                ctrZombie++;
+                if(ctrZombie > parent.player.stage-1)
+                {
+                    ctrZombie = 0;
+                }
+                Invalidate();
+            }
+        }
+
         public void prev()
         {
-            menu--;
-            if(menu < 1)
+            if (ctrGall == 0)
             {
-                menu = 3;
+                menu--;
+                if (menu < 1)
+                {
+                    menu = 3;
+                }
+                Invalidate();
             }
-            Invalidate();
+            else if (ctrGall == 1)
+            {
+                ctrBoss--;
+                if (ctrBoss < 0)
+                {
+                    ctrBoss = parent.player.boss - 1;
+                }
+                Invalidate();
+            }
+            else if (ctrGall == 2)
+            {
+                ctrWeapon--;
+                if (ctrWeapon < 0)
+                {
+                    ctrWeapon = 5;
+                }
+                Invalidate();
+            }
+            else if (ctrGall == 3)
+            {
+                ctrZombie--;
+                if (ctrZombie < 0)
+                {
+                    ctrZombie = parent.player.stage - 1;
+                }
+                Invalidate();
+            }
         }
 
         private void gallery_Paint(object sender, PaintEventArgs e)
         {
             g = e.Graphics;
-            Image bg = Image.FromFile("image/background/bg_gallery.jpg");
+            if(ctrGall == 0)
+            {
+                Image bg = Image.FromFile("image/background/bg_gallery.jpg");
 
-            g.DrawImage(bg, 0, 0, 800, 600);
-            if(menu == 1)
+                g.DrawImage(bg, 0, 0, 800, 600);
+                if (menu == 1)
+                {
+                    g.DrawImage(iconBoss, 0, 0, 800, 600);
+                }
+                else if (menu == 2)
+                {
+                    g.DrawImage(iconWeapon, 0, 0, 800, 600);
+                }
+                else if (menu == 3)
+                {
+                    g.DrawImage(iconZombie, 0, 0, 800, 600);
+                }
+
+                Font f = new Font("Microsoft Sans Serif", 16);
+                Brush b = new SolidBrush(Color.White);
+                String word = "Welcome to the Database Center,\nSir ";
+                g.DrawString(word + parent.player.nama, f, b, 420, 20);
+
+                String desc = "";
+                if (menu == 2)
+                {
+                    desc = "Weapon Box\nLook inside to see the collection of\nweapon that you've used";
+                }
+                else if (menu == 3)
+                {
+                    desc = "Zombie Prison\nLook at all the collection of zombie\nthat you've captured";
+                }
+                else if (menu == 1)
+                {
+                    desc = "Boss Data\nSee the description of the boss you've\nmet";
+                }
+
+                g.DrawString(desc, f, b, 420, 90);
+            }else if(ctrGall == 1)
             {
-                g.DrawImage(iconBoss, 0, 0, 800, 600);
-            }else if(menu == 2)
+                //BOSS
+                Image gal_boss;
+                
+            }else if(ctrGall == 2)
             {
-                g.DrawImage(iconWeapon, 0, 0, 800, 600);
+                //WEAPON
+                Image gal_weapon;
+
+            }else if(ctrGall == 3)
+            {
+                //ZOMBIE
+                Image[] gal_zombie = new Image[6];
+                gal_zombie[0] = Image.FromFile("image/gallery/zombie/gal_infected.jpg");
+                gal_zombie[1] = Image.FromFile("image/gallery/zombie/gal_mutant.jpg");
+                gal_zombie[2] = Image.FromFile("image/gallery/zombie/gal_mummy.jpg");
+                gal_zombie[3] = Image.FromFile("image/gallery/zombie/gal_clown.jpg");
+                gal_zombie[4] = Image.FromFile("image/gallery/zombie/gal_soldier.jpg");
+                gal_zombie[5] = Image.FromFile("image/gallery/zombie/gal_frankestein.jpg");
+                g.DrawImage(gal_zombie[ctrZombie], 0, 0, 800, 600);
             }
-            else if (menu == 3)
-            {
-                g.DrawImage(iconZombie, 0, 0, 800, 600);
-            }
-
-            Font f = new Font("Microsoft Sans Serif", 16);
-            Brush b = new SolidBrush(Color.White);
-            String word = "Welcome to the Database Center,\nSir ";
-            g.DrawString(word + parent.player.nama, f, b, 420, 20);
-
-            String desc = "";
-            if(menu ==2)
-            {
-                desc = "Weapon Box\nLook inside to see the collection of\nweapon that you've used";
-            }else if(menu == 3)
-            {
-                desc = "Zombie Prison\nLook at all the collection of zombie\nthat you've captured";
-            }else if(menu == 1)
-            {
-                desc = "Boss Data\nSee the description of the boss you've\nmet";
-            }
-
-            g.DrawString(desc, f, b, 420, 90);
         }
     }
 }

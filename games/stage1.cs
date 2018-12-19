@@ -37,6 +37,9 @@ namespace games
         Image[] peasant_idle = new Image[2];
         Image[] peasant_move = new Image[3];
         Image[] child = new Image[10];
+        Image boss5_ammo;
+        Image boss5_ammocoll;
+        Image[] boss5 = new Image[7];
         List<item> drop = new List<item>();
 
         bool ctrPeasant = false;
@@ -45,6 +48,7 @@ namespace games
         int y_child = 400;
         int x_peasant = 800;
         int y_peasant = 400;
+        bool bossFight = false;
 
         int dx = 10;
         int x = 10;
@@ -63,10 +67,11 @@ namespace games
         Form1 parent;
         SoundPlayer[] sfx_weapon = new SoundPlayer[7];
         Image currBossAnim = null;
+        bool done = false;
         List<Image> listFlash = new List<Image>();
         public void gameover()
         {
-            if(p.life <= 0)
+            if(p.life <= 0 || done == true)
             {
                 MessageBox.Show("GAME OVER!");
                 if(parent.player.highscore[level] < p.score)
@@ -93,7 +98,8 @@ namespace games
 
             if(stage == 6)
             {
-
+                done = true;
+                gameover();
             }
         }
 
@@ -118,6 +124,18 @@ namespace games
 
         public stage1()
         {
+            //boss5
+            boss5[0] = Image.FromFile("image/boss/boss5_idle1.png");
+            boss5[1] = Image.FromFile("image/boss/boss5_idle2.png");
+            boss5[2] = Image.FromFile("image/boss/boss5_idle3.png");
+            boss5[3] = Image.FromFile("image/boss/boss5_dead1.png");
+            boss5[4] = Image.FromFile("image/boss/boss5_dead2.png");
+            boss5[5] = Image.FromFile("image/boss/boss5_dead3.png");
+            boss5[6] = Image.FromFile("image/boss/boss5_dead4.png");
+            boss5_ammo = Image.FromFile("image/boss/boss5_ammo.png");
+            boss5_ammocoll = Image.FromFile("image/boss/boss5_coll.png");
+
+
             //KODE WEAPON MBEK AMMO
             /*
             0 = default pistol
@@ -358,9 +376,32 @@ namespace games
                 g.DrawImage(img_drop[drop[i].jenis], drop[i].x, 550, 50, 50);
             }
 
-            if (currBossAnim != null)
+            if(bossFight == true)
             {
-                g.DrawImage(currBossAnim, x_boss, y_boss, 200, 200);
+                if(level == 2)
+                {
+                    if (currBossAnim != null)
+                    {
+                        g.DrawImage(currBossAnim, x_boss, y_boss, 200, 200);
+                    }
+                }else if(level == 5)
+                {
+                    g.DrawImage(boss5[aniBoss5], 550, 50, 200, 200);
+                    for (int i = 0; i < enemyAmmo.Count; i++)
+                    {
+                        if(enemyAmmo[i].jenis == -1)
+                        {
+
+                            g.DrawImage(boss5_ammo, enemyAmmo[i].x, enemyAmmo[i].y, 50, 50);
+                        }
+                        else
+                        {
+                            g.DrawImage(boss5_ammocoll, enemyAmmo[i].x, enemyAmmo[i].y, 50, 50);
+                        }
+                    }
+
+                    
+                }
             }
             
         }
@@ -692,6 +733,7 @@ namespace games
                     }
                 }
             }
+            boss5_ammoMove();
             ammoColl();
             Invalidate();
         }
@@ -792,6 +834,77 @@ namespace games
                 if(shot[i].x > 800 || shot[i].x+50 < 0)
                 {
                     shot.RemoveAt(i);
+                }
+            }
+
+            //tembak boss
+            if(bossFight == true)
+            {
+                if(level == 5)
+                {
+                    for (int i = 0; i < shot.Count; i++)
+                    {
+                        int tempX = shot[i].x;
+                        int tempY = shot[i].y;
+                        if (shot[i].jenis == 0 || shot[i].jenis == 3)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(550, 50, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss5 -= shot[i].dmg;
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 1 || shot[i].jenis == 5)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(550, 50, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss5 -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 2)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY - 100, 200, 200);
+                            Rectangle rZombie = new Rectangle(550, 50, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss5 -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 4)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(550, 50, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                shot.Add(new ammo(6, shot[i].x, shot[i].y, shot[i].arah));
+                                sfx_weapon[6].Play();
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 6)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY - 100, 200, 200);
+                            Rectangle rZombie = new Rectangle(550, 50, 200, 200);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss5 -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(hp_boss5 <= 0)
+                    {
+                        nextStage();
+                    }
                 }
             }
             Invalidate();
@@ -910,8 +1023,10 @@ namespace games
                                 timerJalan.Stop();
                                 timerJump.Stop();
                                 timerPlayerMati.Start();
-
                                 p.life--;
+                                ctrImmortal = 0;
+                                p.immortal = true;
+                                timerImmortal.Start();
                             }
                         }
                     }
@@ -936,12 +1051,30 @@ namespace games
                 else
                 {
                     //BOSS STAGE
-                    timerNextStage.Stop();
-                    if (level == 1)
+                    if(level == 1)
                     {
-                        timerBoss.Start();
-                        keyDisabled = false;
+                        parent.bgplay(3);
+                    }else if(level == 2)
+                    {
+                        parent.bgplay(5);
+                    }else if(level == 3)
+                    {
+                        parent.bgplay(7);
+                    }else if(level == 4)
+                    {
+                        parent.bgplay(9);
+                    }else if(level == 5)
+                    {
+                        parent.bgplay(11);
+                    }else if(level == 6)
+                    {
+                        parent.bgplay(13);
                     }
+                    timerNextStage.Stop();
+                    timerBonus.Start();
+                    keyDisabled = false;
+                    bossFight = true;
+                    timerBoss.Start();
 
                 }
             }
@@ -990,11 +1123,13 @@ namespace games
 
             if (ctrPlayerMati == 6)
             {
+                currAnim = animPlayer[0] ;
                 timerPlayerMati.Stop();
                 keyDisabled = false;
                 ctrPlayerMati = -1;
                 bot.Clear();
                 enemyNow = 0;
+                gameover();
             }
             ctrPlayerMati++;
             Invalidate();
@@ -1155,17 +1290,53 @@ namespace games
                 timerImmortal.Stop();
             }
         }
-
+        
+        //VARIABLE BOSS 2
         int ctrTimerBoss = 0;
         float x_boss = 599;
         int y_boss = 400;
         float boss_hadap = -1;
+
+        //VARIABLE BOSS 5
+        List<ammo> enemyAmmo = new List<ammo>();
+        int ctrBoss5 = 0;
+        int aniBoss5 = 0;
+        int hp_boss5 = 650;
+
+        public void resetBoss()
+        {
+            //VARIABLE BOSS 2
+            ctrTimerBoss = 0;
+            x_boss = 599;
+            y_boss = 400;
+            boss_hadap = -1;
+            currBossAnim = null;
+
+            //VARIABLE BOSS 5
+            enemyAmmo = new List<ammo>();
+            ctrBoss5 = 0;
+            aniBoss5 = 0;
+            hp_boss5 = 650;
+            bossFight = false;
+
+            timerBoss.Stop();
+        }
+
         private void timerBoss_Tick(object sender, EventArgs e)
         {
-            if (level == 1)
+            if (level == 2)
             {
-                currBossAnim = listFlash[ctrTimerBoss];
-                x_boss -= 10*boss_hadap;
+                if (boss_hadap == 1)
+                {
+                    currBossAnim = listFlash[ctrTimerBoss];
+                }
+                else
+                {
+                    Bitmap bmp = new Bitmap(listFlash[ctrTimerBoss]);
+                    bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                    currBossAnim = bmp;
+                }
+                x_boss -= 10 * boss_hadap;
 
                 ctrTimerBoss++;
                 if (ctrTimerBoss == 3)
@@ -1173,33 +1344,142 @@ namespace games
                     ctrTimerBoss = 0;
                 }
 
-                if (boss_hadap == 1)
-                {
-                    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200).IntersectsWith(new Rectangle(x-150, y, 200, 200)))
-                    {
-                        boss_hadap *= -1;
-                        x_boss += 150;
-                    }
-                }
-                else
-                {
-                    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200).IntersectsWith(new Rectangle(x+150, y, 200, 200)))
-                    {
-                        boss_hadap *= -1;
-                        x_boss -= 150;
-                    }
-                    Bitmap bmp = new Bitmap(listFlash[ctrTimerBoss]);
-                    bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
-                    currBossAnim = bmp;
-
-                }
-                
 
                 if (x_boss <= 0 || x_boss >= 600)
                 {
                     boss_hadap *= -1;
                 }
+
+                collBoss2();
             }
+            else if (level == 5)
+            {
+                ctrBoss5++;
+                if (ctrBoss5 == 100)
+                {
+                    enemyAmmo.Add(new ammo(-2, 667 - 20, 210 - 70, x));
+                }
+                else if (ctrBoss5 == 140)
+                {
+                    enemyAmmo.Add(new ammo(-2, 690 - 20, 213 - 70, x));
+                }
+                else if (ctrBoss5 == 180)
+                {
+                    enemyAmmo.Add(new ammo(-2, 710 - 20, 211 - 70, x));
+                    ctrBoss5 = 0;
+                }
+
+                aniBoss5++;
+                if (aniBoss5 > 2)
+                {
+                    aniBoss5 = 0;
+                }
+
+                Invalidate();
+            }
+        }
+
+        //BOSS 2 PUNYA YAAA
+        public void collBoss2()
+        {
+            if(p.immortal == false)
+            {
+                if (boss_hadap == 1)
+                {
+                    if (new Rectangle(Convert.ToInt32(x_boss), y_boss, 100, 100).IntersectsWith(new Rectangle(x - 150, y, 200, 200)))
+                    {
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        timerPlayerMati.Start();
+                        p.life--;
+                    }
+                }
+                else
+                {
+                    if (new Rectangle(Convert.ToInt32(x_boss) + 80, y_boss, 100, 100).IntersectsWith(new Rectangle(x + 150, y, 200, 200)))
+                    {
+                        timerPlayerMati.Start();
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        p.life--;
+                    }
+                }
+            }
+            
+        }
+        
+
+        
+        //BOSS 5 PUNYA JANGAN DIUBAH BARISAN
+        public void boss5_ammoColl()
+        {
+            for (int i = 0; i < enemyAmmo.Count; i++)
+            {
+                Rectangle rplayer = new Rectangle(x, y + 40, 120, 160);
+                if (hadap == -1)
+                {
+                    rplayer.X -= 30;
+                }
+                Rectangle rammo = new Rectangle(enemyAmmo[i].x, enemyAmmo[i].y, 50, 50);
+
+                if (p.immortal == false)
+                {
+                    if (rplayer.IntersectsWith(rammo))
+                    {
+                        timerPlayerMati.Start();
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        p.life--;
+                        enemyAmmo[i].jenis = -3;
+                    }
+                }
+
+                if (enemyAmmo[i].y > 600)
+                {
+                    enemyAmmo.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        public void boss5_ammoMove()
+        {
+            for (int i = 0; i < enemyAmmo.Count; i++)
+            {
+                int speed = (int)Math.Abs(680 - x) / 40;
+                if (enemyAmmo[i].jenis == -2)
+                {
+                    enemyAmmo[i].jenis = -1;
+                }
+                else if (enemyAmmo[i].jenis < -2)
+                {
+                    enemyAmmo[i].jenis--;
+                    if (enemyAmmo[i].jenis == -10)
+                    {
+                        enemyAmmo.RemoveAt(i);
+                        break;
+                    }
+                }
+                if (enemyAmmo[i].x < enemyAmmo[i].arah)
+                {
+                    enemyAmmo[i].x += speed;
+                }
+                else if (enemyAmmo[i].x > enemyAmmo[i].arah)
+                {
+                    enemyAmmo[i].x -= speed;
+                }
+                enemyAmmo[i].y += 10;
+            }
+            boss5_ammoColl();
+            Invalidate();
+        }
+
+        private void stage1_MouseClick(object sender, MouseEventArgs e)
+        {
+            //MessageBox.Show(e.X+" "+e.Y);
         }
     }
 }

@@ -69,3 +69,26 @@ C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-
 C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\Interop.WMPLib.dll
 C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\bin\Debug\AxInterop.WMPLib.dll
 C:\Users\ivanc\Google Drive\Kuliah\Pemrograman Visual\Proyek PV\Proyek-PV\Metal-Slug\games\obj\Debug\games.csproj.CopyComplete
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\games.exe.config
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\games.exe
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\games.pdb
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\ClassLibrary1.dll
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\ClassLibrary1.pdb
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\Interop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\bin\Debug\AxInterop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.csprojResolveAssemblyReference.cache
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\Interop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\AxInterop.WMPLib.dll
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.csproj.ResolveComReference.cache
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.Form1.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.gallery.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.mainmenu.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.newgame.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.Properties.Resources.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.stage.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.stage1.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.startmenu.resources
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.csproj.GenerateResource.Cache
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.csproj.CoreCompileInputs.cache
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.exe
+E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\games\obj\Debug\games.pdb

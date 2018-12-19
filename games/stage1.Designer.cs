@@ -80,6 +80,7 @@
             // 
             // timerNextStage
             // 
+            this.timerNextStage.Interval = 10;
             this.timerNextStage.Tick += new System.EventHandler(this.timerNextStage_Tick);
             // 
             // timerPlayerMati
@@ -131,6 +132,7 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.stage1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.stage1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.stage1_KeyUp);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.stage1_MouseClick);
             this.ResumeLayout(false);
 
         }
