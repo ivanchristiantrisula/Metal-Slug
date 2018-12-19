@@ -1605,6 +1605,7 @@ namespace games
                     enemyAmmo[i].x -= speed;
                 }
                 enemyAmmo[i].y += 10;
+                enemyAmmo[i].y += 10;
             }
             boss5_ammoColl();
             Invalidate();
