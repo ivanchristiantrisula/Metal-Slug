@@ -37,6 +37,7 @@ namespace games
         Image[] peasant_idle = new Image[2];
         Image[] peasant_move = new Image[3];
         Image[] child = new Image[10];
+        Image[] boss4 = new Image[11];
         Image boss5_ammo;
         Image boss5_ammocoll;
         Image[] boss5 = new Image[7];
@@ -71,15 +72,23 @@ namespace games
         List<Image> listFlash = new List<Image>();
         public void gameover()
         {
+            
             if(p.life <= 0 || done == true)
             {
+                timerMove.Stop();
+                timerShot.Stop();
+                timerZombie.Stop();
+                timerBonus.Stop();
+                timerChild.Stop();
+                timerImmortal.Stop();
+                keyDisabled = true;
+                resetBoss();
                 MessageBox.Show("GAME OVER!");
                 if(parent.player.highscore[level] < p.score)
                 {
                     MessageBox.Show("Congratulation you get a new highscore!");
                     parent.player.highscore[level] = p.score;
                 }
-
                 parent.goForm(3);
             }
         }
@@ -124,6 +133,20 @@ namespace games
 
         public stage1()
         {
+            //boss4
+            boss4[0] = Image.FromFile("image/boss/boss4_idle1.png");
+            boss4[1] = Image.FromFile("image/boss/boss4_idle2.png");
+            boss4[2] = Image.FromFile("image/boss/boss4_idle3.png");
+            boss4[3] = Image.FromFile("image/boss/boss4_shot1.png");
+            boss4[4] = Image.FromFile("image/boss/boss4_shot2.png");
+            boss4[5] = Image.FromFile("image/boss/boss4_shot3.png");
+            boss4[6] = Image.FromFile("image/boss/boss4_shot4.png");
+            boss4[7] = Image.FromFile("image/boss/boss4_shot5.png");
+            boss4[8] = Image.FromFile("image/boss/boss4_dead1.png");
+            boss4[9] = Image.FromFile("image/boss/boss4_dead2.png");
+            boss4[10] = Image.FromFile("image/boss/boss4_dead3.png");
+
+
             //boss5
             boss5[0] = Image.FromFile("image/boss/boss5_idle1.png");
             boss5[1] = Image.FromFile("image/boss/boss5_idle2.png");
@@ -399,8 +422,13 @@ namespace games
                             g.DrawImage(boss5_ammocoll, enemyAmmo[i].x, enemyAmmo[i].y, 50, 50);
                         }
                     }
-
-                    
+                }else if(level == 4) {
+                    g.DrawImage(boss4[aniBoss4], 550, 100, 500, 500);
+                    if(ctrLaser > -1)
+                    {
+                        Pen p = new Pen(Color.DarkRed,30);
+                        g.DrawLine(p, 597, 150, desLaser, 600);
+                    }
                 }
             }
             
@@ -510,6 +538,7 @@ namespace games
         {
             if (ctrPlayerMati == 0)
             {
+                timerShotAtas.Stop();
                 timerJalan.Stop();
                 ctrJalan = 0;
                 timerIdle.Start();
@@ -983,6 +1012,73 @@ namespace games
                     {
                         nextStage();
                     }
+                }else if(level == 4)
+                {
+                    for (int i = 0; i < shot.Count; i++)
+                    {
+                        int tempX = shot[i].x;
+                        int tempY = shot[i].y;
+                        if (shot[i].jenis == 0 || shot[i].jenis == 3)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(550, 100, 500, 500);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss4 -= shot[i].dmg;
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 1 || shot[i].jenis == 5)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(550, 100, 500, 500);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss4 -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 2)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY - 100, 200, 200);
+                            Rectangle rZombie = new Rectangle(550, 100, 400, 400);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss4 -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 4)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY, 5, 5);
+                            Rectangle rZombie = new Rectangle(550, 100, 500, 500);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                shot.Add(new ammo(6, shot[i].x, shot[i].y, shot[i].arah));
+                                sfx_weapon[6].Play();
+                                shot.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (shot[i].jenis == 6)
+                        {
+                            Rectangle rAmmo = new Rectangle(tempX, tempY - 100, 200, 200);
+                            Rectangle rZombie = new Rectangle(550, 100, 500, 500);
+                            if (rAmmo.IntersectsWith(rZombie))
+                            {
+                                hp_boss4 -= shot[i].dmg;
+                                break;
+                            }
+                        }
+                    }
+
+
+                    if (hp_boss4 <= 0)
+                    {
+                        aniBoss4 = 8;
+                        nextStage();
+                    }
                 }
             }
             Invalidate();
@@ -1436,6 +1532,14 @@ namespace games
         int aniBoss5 = 0;
         int hp_boss5 = 650;
 
+        //VARIABLE BOSS 4
+        int ctrBoss4 = 0;
+        int aniBoss4 = 0;
+        int hp_boss4 = 500;
+        int ctrLaser = -1;
+        int desLaser = 0;
+        
+
         public void resetBoss()
         {
             //VARIABLE BOSS 2
@@ -1451,6 +1555,14 @@ namespace games
             aniBoss5 = 0;
             hp_boss5 = 650;
             bossFight = false;
+
+            //VARIABLE BOSS 4
+            ctrBoss4 = 0;
+            aniBoss4 = 0;
+            hp_boss4 = 500;
+            ctrLaser = -1;
+            desLaser = 0;
+
 
             timerBoss.Stop();
         }
@@ -1509,7 +1621,104 @@ namespace games
                 }
 
                 Invalidate();
+            }else if(level == 4)
+            {
+                ctrBoss4++;
+                if(ctrBoss4 == 100 && hp_boss4 > 0)
+                {
+                    ctrBoss4 = 0;
+                    desLaser = x;
+                    aniBoss4 = 3;
+                }
+
+                if(aniBoss4 < 3)
+                {
+                    aniBoss4++;
+                    if(aniBoss4 > 2)
+                    {
+                        aniBoss4 = 0;
+                    }
+                }
+                else if(aniBoss4 > 3 && hp_boss4 > 0)
+                {
+                    ctrBoss4++;
+                    if(ctrBoss4 > 10)
+                    {
+                        ctrBoss4 = 0;
+                        aniBoss4++;
+                        if(aniBoss4 == 4)
+                        {
+                            desLaser = x;
+                        }
+                        if (aniBoss4 > 6)
+                        {
+                            ctrLaser = 0;
+                            Invalidate();
+                            boss4Shot.Start();
+                        }
+                        if(aniBoss4 > 7)
+                        {
+                            aniBoss4 = 0;
+                        }
+                    }
+
+                }
+                else
+                {
+                    ctrBoss4++;
+                    if(ctrBoss4 > 10)
+                    {
+                        ctrBoss4 = 0;
+                        aniBoss4++;
+                        if(aniBoss4 > 10)
+                        {
+                            bossFight = false;
+                            done = true;
+                        }
+                        Invalidate();
+                    }
+                }
+                collLaser();
             }
+        }
+        //BOSS 4 PUNYA AING
+        public void boss4_shot()
+        {
+            boss4Shot.Start();
+        }
+
+
+
+        public void collLaser()
+        {
+            Rectangle rplayer = new Rectangle(x, y + 40, 120, 160);
+            Rectangle hitarea = new Rectangle(desLaser, 500, 30, 30);
+
+            if(ctrLaser > -1)
+            {
+                if(p.immortal == false)
+                {
+                    if (rplayer.IntersectsWith(hitarea) == true)
+                    {
+                        timerPlayerMati.Start();
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        p.life--;
+                    }
+                }
+            }
+        }
+
+        private void boss4Shot_Tick(object sender, EventArgs e)
+        {
+            ctrLaser++;
+            if(ctrLaser > 0)
+            {
+                ctrLaser = -1;
+                boss4Shot.Stop();
+            }
+            Invalidate();
         }
 
         //BOSS 2 PUNYA YAAA
@@ -1618,7 +1827,6 @@ namespace games
                     enemyAmmo[i].x -= speed;
                 }
                 enemyAmmo[i].y += 10;
-                enemyAmmo[i].y += 10;
             }
             boss5_ammoColl();
             Invalidate();
@@ -1626,12 +1834,14 @@ namespace games
 
         private void stage1_MouseClick(object sender, MouseEventArgs e)
         {
-            //MessageBox.Show(e.X+" "+e.Y);
+            MessageBox.Show(e.X+" "+e.Y);
         }
 
         private void timerShotAtas_Tick(object sender, EventArgs e)
         {
             nembak(1);
         }
+
+        
     }
 }

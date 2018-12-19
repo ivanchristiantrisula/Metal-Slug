@@ -53,7 +53,7 @@ namespace games
         }
 
         int ctrGall = 0;
-        int ctrBoss = 0;
+        int ctrBoss = -1;
         int ctrWeapon = 0;
         int ctrZombie = 0;
         //0 Main
@@ -66,6 +66,13 @@ namespace games
             if(ctrGall == 0)
             {
                 ctrGall = menu;
+                if(menu == 1)
+                {
+                    if(parent.player.boss > 0)
+                    {
+                        ctrBoss = 0;
+                    }
+                }
             }
             Invalidate();
         }
@@ -85,7 +92,14 @@ namespace games
                 ctrBoss++;
                 if(ctrBoss > parent.player.boss-1)
                 {
-                    ctrBoss = 0;
+                    if(parent.player.boss > 0)
+                    {
+                        ctrBoss = 0;
+                    }
+                    else
+                    {
+                        ctrBoss = -1;
+                    }
                 }
                 Invalidate();
             }else if(ctrGall == 2)
@@ -191,14 +205,38 @@ namespace games
             }else if(ctrGall == 1)
             {
                 //BOSS
-                Image gal_boss;
-                
-            }else if(ctrGall == 2)
+                Image[] gal_boss = new Image[6];
+                gal_boss[0] = Image.FromFile("image/gallery/boss/gal_boss1.jpg");
+                gal_boss[1] = Image.FromFile("image/gallery/boss/gal_boss2.jpg");
+                gal_boss[2] = Image.FromFile("image/gallery/boss/gal_boss2.jpg");
+                gal_boss[3] = Image.FromFile("image/gallery/boss/gal_boss4.jpg");
+                gal_boss[4] = Image.FromFile("image/gallery/boss/gal_boss5.jpg");
+                gal_boss[5] = Image.FromFile("image/gallery/boss/gal_boss5.jpg");
+                if(ctrBoss < 0)
+                {
+                    Font f = new Font("Microsoft Sans Serif", 42);
+                    Brush b = new SolidBrush(Color.Black);
+                    g.DrawString("NO DATA FOUND", f, b, 160, 200);
+                }
+                else
+                {
+                    g.DrawImage(gal_boss[ctrBoss], 0, 0, 800, 600);
+                }
+            }
+            else if(ctrGall == 2)
             {
                 //WEAPON
-                Image gal_weapon;
+                Image[] gal_weapon = new Image[6];
+                gal_weapon[0] = Image.FromFile("image/gallery/weapon/gal_weapon1.jpg");
+                gal_weapon[1] = Image.FromFile("image/gallery/weapon/gal_weapon2.jpg");
+                gal_weapon[2] = Image.FromFile("image/gallery/weapon/gal_weapon3.jpg");
+                gal_weapon[3] = Image.FromFile("image/gallery/weapon/gal_weapon4.jpg");
+                gal_weapon[4] = Image.FromFile("image/gallery/weapon/gal_weapon5.jpg");
+                gal_weapon[5] = Image.FromFile("image/gallery/weapon/gal_weapon6.jpg");
+                g.DrawImage(gal_weapon[ctrWeapon], 0, 0, 800, 600);
 
-            }else if(ctrGall == 3)
+            }
+            else if(ctrGall == 3)
             {
                 //ZOMBIE
                 Image[] gal_zombie = new Image[6];
