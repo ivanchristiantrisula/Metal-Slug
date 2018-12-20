@@ -48,6 +48,7 @@
             this.boss4Shot = new System.Windows.Forms.Timer(this.components);
             this.timerJuggerAtt = new System.Windows.Forms.Timer(this.components);
             this.timer1Detik = new System.Windows.Forms.Timer(this.components);
+            this.timerBlood = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timerIdle
@@ -84,7 +85,7 @@
             // 
             // timerNextStage
             // 
-            this.timerNextStage.Interval = 10;
+            this.timerNextStage.Interval = 5;
             this.timerNextStage.Tick += new System.EventHandler(this.timerNextStage_Tick);
             // 
             // timerPlayerMati
@@ -141,14 +142,19 @@
             this.timer1Detik.Interval = 1000;
             this.timer1Detik.Tick += new System.EventHandler(this.timer1Detik_Tick);
             // 
+            // timerBlood
+            // 
+            this.timerBlood.Interval = 500;
+            this.timerBlood.Tick += new System.EventHandler(this.timerBlood_Tick);
+            // 
             // stage1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 488);
+            this.ClientSize = new System.Drawing.Size(800, 601);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "stage1";
             this.Text = "stage1";
             this.Load += new System.EventHandler(this.stage1_Load);
@@ -181,5 +187,6 @@
         private System.Windows.Forms.Timer boss4Shot;
         private System.Windows.Forms.Timer timerJuggerAtt;
         private System.Windows.Forms.Timer timer1Detik;
+        private System.Windows.Forms.Timer timerBlood;
     }
 }

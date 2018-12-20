@@ -22,3 +22,9 @@ E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\ClassLibrary1\obj\Debug\ClassLibrary1
 E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
 E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\ClassLibrary1\obj\Debug\ClassLibrary1.dll
 E:\KULIAH\SEM 3\PV\proyek\Proyek-PV-master\ClassLibrary1\obj\Debug\ClassLibrary1.pdb
+D:\Git\Proyek-PV\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+D:\Git\Proyek-PV\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+D:\Git\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.csprojAssemblyReference.cache
+D:\Git\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
+D:\Git\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+D:\Git\Proyek-PV\ClassLibrary1\obj\Debug\ClassLibrary1.pdb

@@ -143,14 +143,15 @@ namespace games
         //3 Main Menu
         //4 gallery
         //5 stage
+        //6 highscore
 
         //ALL FORM
+        highscore hs = new highscore();
         startmenu sm = new startmenu();
         newgame ng = new newgame();
         mainmenu mm = new mainmenu();
         gallery g = new gallery();
         stage s = new stage();
-        public stage1 s1 = new stage1();
         public void setLevel(int lvl)
         {
             playlvl = lvl;
@@ -161,12 +162,12 @@ namespace games
         }
         public void goForm(int i)
         {
+            hs.Visible = false;
             sm.Visible = false;
             ng.Visible = false;
             mm.Visible = false;
             g.Visible = false;
             s.Visible = false;
-            s1.Visible = false;
 
             if(i == 1)
             {
@@ -204,10 +205,19 @@ namespace games
             }
             else if (i == 6)
             {
-                s1.Visible = true;
-                s1.Location = new Point(0, 0);
-                s1.relaunch(playlvl);
+                stage1 ss = new stage1();
+                ss.MdiParent = this;
+                ss.Visible = true;
+                ss.Location = new Point(0, 0);
+                ss.relaunch(playlvl);
+                ss.Show();
                 formNow = 6;
+            }else if(i == 7)
+            {
+                hs.Visible = true;
+                hs.Location = new Point(0, 0);
+                formNow = 7;
+                hs.relaunch();
             }
         }
         public Form1()
@@ -221,8 +231,8 @@ namespace games
             ng.MdiParent = this;
             mm.MdiParent = this;
             g.MdiParent = this;
-            s.MdiParent = this;
-            s1.MdiParent = this;
+            hs.MdiParent = this;
+            s.MdiParent = this;            
 
             goForm(1);
         }
@@ -339,6 +349,13 @@ namespace games
                 {
                     goForm(3);
                     menu_enter.Play();
+                }
+            }else if(formNow == 7)
+            {
+                if(e.KeyCode == Keys.Back)
+                {
+                    goForm(3);
+
                 }
             }
         }

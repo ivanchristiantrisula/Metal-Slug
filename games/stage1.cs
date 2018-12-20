@@ -85,12 +85,22 @@ namespace games
                 keyDisabled = true;
                 resetBoss();
                 MessageBox.Show("GAME OVER!");
-                if(parent.player.highscore[level] < p.score)
+                if (done == true)
+                {
+                    parent = (Form1)this.MdiParent;
+                    parent.player.stage = this.level + 1;
+                    p.score += 5000;
+                }
+                if (parent.player.highscore[level] < p.score)
                 {
                     MessageBox.Show("Congratulation you get a new highscore!");
-                    parent.player.highscore[level] = p.score;
+                    parent.player.highscore[level-1] = p.score;
                 }
                 parent.goForm(3);
+
+                
+
+                this.Close();
             }
         }
         public void nextStage()
@@ -113,13 +123,22 @@ namespace games
             }
         }
 
+        List<int> xblood = new List<int>();
+        List<int> yblood = new List<int>();
+        List<int> ctrblood = new List<int>();
+
         public void relaunch(int lvl)
         {
             parent = (Form1)this.MdiParent;
             level = lvl;
-            stage = 4;
+            stage = -1;
             x_map = 0;
             x_child = 800;
+            x = 10;
+            ctrLootBox = 0;
+            lootOpened = false;
+            timerLootBox.Start();
+            
             p = new player();
             if (level == 1)
             {
@@ -364,11 +383,53 @@ namespace games
             {
                 if (shot[i].jenis == 2 || shot[i].jenis == 6)
                 {
-                    g.DrawImage(ammoImages[shot[i].jenis], shot[i].x, shot[i].y - 100, 200, 200);
+                    if (shot[i].arah == -1)
+                    {
+                        Image a = ammoImages[shot[i].jenis];
+                        Bitmap bmp = new Bitmap(a);
+                        bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                        a = bmp;
+                        g.DrawImage(a, shot[i].x, shot[i].y - 100, 200, 200);
+
+                    }
+                    else if(shot[i].arah==0)
+                    {
+                        Image a = ammoImages[shot[i].jenis];
+                        Bitmap bmp = new Bitmap(a);
+                        bmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        a = bmp;
+                        g.DrawImage(a, shot[i].x, shot[i].y - 100, 200, 200);
+                    }
+                    else
+                    {
+                        g.DrawImage(ammoImages[shot[i].jenis], shot[i].x, shot[i].y - 100, 200, 200);
+                    }
+                    
                 }
                 else
                 {
-                    g.DrawImage(ammoImages[shot[i].jenis], shot[i].x, shot[i].y, 50, 10);
+                    if (shot[i].arah == -1)
+                    {
+                        Image a = ammoImages[shot[i].jenis];
+                        Bitmap bmp = new Bitmap(a);
+                        bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                        a = bmp;
+                        g.DrawImage(a, shot[i].x, shot[i].y, 50, 10);
+
+                    }
+                    else if (shot[i].arah == 0)
+                    {
+                        Image a = ammoImages[shot[i].jenis];
+                        Bitmap bmp = new Bitmap(a);
+                        bmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        a = bmp;
+                        g.DrawImage(a, shot[i].x, shot[i].y, 10, 50);
+                    }
+                    else
+                    {
+                        g.DrawImage(ammoImages[shot[i].jenis], shot[i].x, shot[i].y, 50, 10);
+                    }
+                    
                 }
             }
 
@@ -453,6 +514,12 @@ namespace games
                     }
                 }
             }
+
+            for (int i = 0; i < ctrblood.Count; i++)
+            {
+                Brush bood = new SolidBrush(Color.Red);
+                g.FillEllipse(bood, xblood[i]+50, yblood[i], 10, 10);
+            }
             
         }
 
@@ -461,6 +528,7 @@ namespace games
             DoubleBuffered = true;
             timerAmmo.Interval = 100;
             timerAmmo.Start();
+            timerBlood.Start();
 
             x_lootbox = r.Next(100, 500);
             timerLootBox.Start();
@@ -622,7 +690,7 @@ namespace games
                     ctrIdle = 0;
                     timerJalan.Start();
                 }
-                if (e.KeyCode == Keys.Enter)
+                if (e.KeyCode == Keys.K)
                 {
                     
                     timerShot.Start();
@@ -827,10 +895,14 @@ namespace games
                             
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 bot[j].life -= shot[i].dmg;
                                 shot.RemoveAt(i);
                                 if (bot[j].life <= 0)
                                 {
+                                    
                                     bot[j].ani = 3;
                                 }
                                 break;
@@ -841,6 +913,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(tempBotX, tempBotY, 120, 160);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 bot[j].life -= shot[i].dmg;
                                 if (bot[j].life <= 0)
                                 {
@@ -914,6 +989,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(550, 50, 200, 200);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 hp_boss5 -= shot[i].dmg;
                                 shot.RemoveAt(i);
                                 break;
@@ -925,6 +1003,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(550, 50, 200, 200);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 hp_boss5 -= shot[i].dmg;
                                 break;
                             }
@@ -981,6 +1062,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 flash_life -= shot[i].dmg;
                                 shot.RemoveAt(i);
                                 break;
@@ -992,6 +1076,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss, 200, 200);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 flash_life -= shot[i].dmg;
                                 break;
                             }
@@ -1034,6 +1121,7 @@ namespace games
                     if (flash_life <= 0)
                     {
                         nextStage();
+                        bossFight = false;
                     }
                 }else if(level == 4)
                 {
@@ -1047,6 +1135,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(550, 100, 500, 500);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 hp_boss4 -= shot[i].dmg;
                                 shot.RemoveAt(i);
                                 break;
@@ -1058,6 +1149,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(550, 100, 500, 500);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 hp_boss4 -= shot[i].dmg;
                                 break;
                             }
@@ -1115,6 +1209,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss-200, 200, 400);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 jugger_life -= shot[i].dmg;
                                 shot.RemoveAt(i);
                                 break;
@@ -1126,6 +1223,9 @@ namespace games
                             Rectangle rZombie = new Rectangle(Convert.ToInt32(x_boss), y_boss - 200, 200, 400);
                             if (rAmmo.IntersectsWith(rZombie))
                             {
+                                xblood.Add(tempX);
+                                yblood.Add(tempY);
+                                ctrblood.Add(0);
                                 jugger_life -= shot[i].dmg;
                                 break;
                             }
@@ -1167,6 +1267,7 @@ namespace games
 
                     if (jugger_life <= 0)
                     {
+                        bossFight = false;
                         nextStage();
                     }
                 }
@@ -1292,8 +1393,19 @@ namespace games
             {
                 if (bot[i].life > 0)
                 {
-                    bot[i].x -= 20;
-                    bot[i].x -= 20;
+                    if(bot[i].jenis == 0 || bot[i].jenis == 2)
+                    {
+                        bot[i].x -= 20;
+                    }else if(bot[i].jenis == 1 || bot[i].jenis == 4)
+                    {
+                        bot[i].x -= 40;
+                    }else if(bot[i].jenis == 3 || bot[i].jenis == 5)
+                    {
+                        bot[i].x -= 30;
+                    }
+                    {
+
+                    }
                     bot[i].ani++;
                     if (bot[i].ani > 2)
                     {
@@ -1394,7 +1506,12 @@ namespace games
                     keyDisabled = false;
                     bossFight = true;
                     timerBoss.Start();
-                    timer1Detik.Start();
+
+                    if (level == 1 && stage == 5)
+                    {
+                        timer1Detik.Start();
+                    }
+                    
                 }
             }
             else
@@ -1428,6 +1545,7 @@ namespace games
         int ctrPlayerMati = 0;
         private void timerPlayerMati_Tick(object sender, EventArgs e)
         {
+            keyDisabled = true;
             if (hadap == 1)
             {
                 currAnim = animPlayer[ctrPlayerMati + 6];
@@ -1587,7 +1705,7 @@ namespace games
                     timerChild.Interval = 100;
                     //drop barang
                     int r_jenis = r.Next(6);
-                    drop.Add(new item(r_jenis, x_child));
+                    drop.Add(new item(0, x_child));
                 }
             }
             if(x_child < -200)
@@ -1634,6 +1752,9 @@ namespace games
         {
             //VARIABLE BOSS 2
             ctrTimerBoss = 0;
+            flash_life = 250;
+            jugger_life = 500;
+            bossFight = false;
             x_boss = 599;
             y_boss = 400;
             boss_hadap = -1;
@@ -1652,6 +1773,13 @@ namespace games
             hp_boss4 = 500;
             ctrLaser = -1;
             desLaser = 0;
+
+            //var 1
+            timerJuggerAtt.Stop();
+            timer1Detik.Stop();
+            jugger_life = 500;
+            ctrJuggerAtt = 0;
+            ctrTimerBoss = 0;
 
 
             timerBoss.Stop();
@@ -1807,6 +1935,7 @@ namespace games
                     if (x < x_boss)
                     {
                         boss_hadap *= -1;
+                        
                     }
                 }
             }
@@ -1963,6 +2092,7 @@ namespace games
         {
             if (boss_hadap == -1)
             {
+                
                 currBossAnim = imageJugger[ctrJuggerAtt + 3];
             }
             else
@@ -1974,7 +2104,18 @@ namespace games
 
             if (ctrJuggerAtt == 5)
             {
-                if (x < x_boss + 25 && x > x_boss - 25)
+                if (boss_hadap == 1)
+                {
+                    if (x < x_boss)
+                    {
+                        ctrImmortal = 0;
+                        p.immortal = true;
+                        timerImmortal.Start();
+                        timerPlayerMati.Start();
+                        p.life--;
+                    }
+                }
+                if (x < x_boss + 50 && x > x_boss - 50)
                 {
                     ctrImmortal = 0;
                     p.immortal = true;
@@ -1998,14 +2139,33 @@ namespace games
         int detik = 1;
         private void timer1Detik_Tick(object sender, EventArgs e)
         {
-            if (detik%5==0)
+            if (level == 1 && stage == 5)
             {
-                timerJuggerAtt.Start();
-                timerBoss.Stop();
-                detik++;
-                timer1Detik.Stop();
+                if (detik % 5 == 0)
+                {
+                    timerJuggerAtt.Start();
+                    timerBoss.Stop();
+                    detik++;
+                    timer1Detik.Stop();
+                }
             }
+           
             detik++;
+        }
+
+        private void timerBlood_Tick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < xblood.Count; i++)
+            {
+                ctrblood[i]++;
+                if(ctrblood[i] == 2)
+                {
+                    ctrblood.RemoveAt(i);
+                    xblood.RemoveAt(i);
+                    yblood.RemoveAt(i);
+                }
+            }
+            Invalidate();
         }
     }
 }

@@ -59,6 +59,9 @@ namespace games
             }else if(menu == 1)
             {
                 parent.goForm(5);
+            }else if(menu == 3)
+            {
+                parent.goForm(7);
             }
         }
         public void prev()

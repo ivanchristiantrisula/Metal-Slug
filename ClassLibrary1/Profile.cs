@@ -78,7 +78,7 @@ namespace ClassLibrary1
             //3 mummy
             //4 clown
             //5 soldier
-            //6 hulk
+            //6 frankestein
             if(jenis == 0)
             {
                 this.life = 1;
