@@ -1,2 +1,2 @@
 # Proyek-PV
-Metal Slug
+Metal Slug insipired Windows App Game built with C# and Windows Form.
